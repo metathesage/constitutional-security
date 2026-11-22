@@ -1,0 +1,23 @@
+policy prompt_injection_resistance {
+  // P1: Prompt injection cannot lead to sensitive data output or exfiltration
+  require G ¬(
+    PromptContains(injection_marker) →
+    F (OutputContains(sensitive_data) ∨ ToolCall(exfil, _))
+  )
+}
+
+policy multi_turn_injection_resistance {
+  // P8: Multi-turn injection resistance
+  require G ¬(
+    ∃i. PromptContains(injection_marker)@i ∧
+    F (OutputContains(sensitive_data) ∨ ToolCall(exfil, _))@j ∧ j > i
+  )
+}
+
+policy instruction_following_in_tool_outputs {
+  // P11: No instruction following in tool outputs
+  require G ¬(
+    ToolCall(_, output) ∧ OutputContains(instruction_marker) ∧
+    F ToolCall(_, _)
+  )
+}

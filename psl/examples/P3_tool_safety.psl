@@ -1,0 +1,33 @@
+policy tool_sandbox_integrity {
+  // P3: Code exec args satisfy sandbox
+  require G (
+    ToolCall(code_exec, args) →
+    (ArgsSatisfy(args, sandbox_constraints) ∧
+     OutputType(output, expected_type))
+  )
+}
+
+policy tool_output_schema {
+  // P4: Tool output type matches schema
+  require G (
+    ToolCall(tool, args) →
+    OutputConforms(tool.schema.output)
+  )
+}
+
+policy tool_chaining_sandboxed {
+  // P9: Tool chaining sandboxed
+  require G (
+    ToolCall(t1, _) ∧ ToolCall(t2, _) ∧ t1 ≠ t2 →
+    (SandboxIsolated(t1) ∧ SandboxIsolated(t2) ∧
+     ¬DataFlow(t1.output, t2.input) ∨ ExplicitPipe(t1, t2))
+  )
+}
+
+policy no_instruction_following_in_tool_outputs {
+  // P11: No instruction following in tool outputs
+  require G ¬(
+    ToolCall(_, output) ∧ OutputContains(instruction_marker) ∧
+    F ToolCall(_, _)
+  )
+}

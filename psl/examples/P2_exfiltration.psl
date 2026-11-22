@@ -1,0 +1,23 @@
+policy data_exfiltration_prevention {
+  // P2: No unauthorized external data flow
+  require G ¬(
+    DataFlow(user_context, external_api) ∧
+    ¬UserConsented(external_api)
+  )
+}
+
+policy no_pii_without_consent {
+  // P6: No PII in outputs without consent
+  require G ¬(
+    OutputContains(pii) ∧
+    ¬UserConsented(pii_output)
+  )
+}
+
+policy chain_of_thought_protection {
+  // P7: Chain-of-thought not leaked
+  require G ¬(
+    OutputContains(cot_marker) ∧
+    ¬InternalReasoningStep()
+  )
+}

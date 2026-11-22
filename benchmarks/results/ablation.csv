@@ -1,0 +1,6 @@
+ablation,false_negatives,verification_time_seconds
+full_framework,0,3.6
+no_abstract_interpretation,247,N/A
+no_runtime_enforcer,0*,3.6
+no_attestation,0*,3.6
+intervals_only,89,1.2

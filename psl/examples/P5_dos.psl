@@ -1,0 +1,29 @@
+policy cost_dos_prevention {
+  // P5: Cost threshold triggers termination
+  require G (
+    CostExceeds(threshold) →
+    F ToolCall(terminate, _)
+  )
+}
+
+policy output_length_bounded {
+  // P10: Output length bounded
+  require G (
+    OutputLength() ≤ max_output_tokens
+  )
+}
+
+policy pii_privacy {
+  // P6: No PII in outputs without consent
+  require G ¬(
+    OutputContains(pii) ∧
+    ¬UserConsented(pii_output)
+  )
+}
+
+policy constitutional_principle_adherence {
+  // P12: Constitutional principle adherence
+  require G (
+    ConstitutionalPrinciplesSatisfied()
+  )
+}

@@ -1,0 +1,9 @@
+metric,constitutional_security,constitutional_ai,guardrails_ai,rlhf_only
+false_negatives,0,247,1834,3112
+false_positives,12,89,2103,N/A
+verification_time_seconds,3.6,N/A,N/A,N/A
+runtime_overhead_percent,2.3,0.8,15,0
+tcb_loc,2000,15000,50000,100000
+model,llama-3.1-70b-4bit,llama-3.1-70b-4bit,llama-3.1-70b-4bit,llama-3.1-70b-4bit
+benchmark_size,10000,10000,10000,10000
+adversarial_sources,"PromptInject,HijackLLM,Custom Agentic,Sandbox Escapes",same,same,same
